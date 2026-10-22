@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  新文章模板（这个文件不会出现在网站上）
+  ------------------------------------------------------------
+  GitHub Pages 会自动忽略以 _ 开头的文件，所以它只是你的"底稿"。
+
+  写新文章的步骤：
+  1. 复制这个文件，改名为英文小写 + 短横线，例如：git-push-tls-error.html
+  2. 改下面所有标了【改】的地方
+  3. 在【正文】里写内容（常用写法见文件末尾的速查表）
+  4. 改上一篇 / 下一篇链接（新文章的"上一篇"= 原来最新的那篇；
+     再打开原来最新那篇，把它的"下一篇"改成指向新文章）
+  5. 在 index.html 和 blog.html 的列表最上面，各加一条新文章
+  6. Live Server 预览 → GitHub Desktop 提交 → Push origin
+  ============================================================
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 【改】浏览器标签上的标题：文章标题 · Everett 的笔记 -->
+  <title>文章标题 · Everett 的笔记</title>
+  <!-- 【改】一两句话的摘要，搜索引擎会显示它 -->
+  <meta name="description" content="这里写一两句话的摘要。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="../index.html">Everett 的笔记</a>
+      <nav class="site-nav">
+        <a href="../index.html">首页</a>
+        <a href="../blog.html" class="active">博客</a>
+        <a href="../about.html">关于</a>
+        <button class="theme-toggle" type="button" aria-label="切换日间/夜间模式">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container article-layout">
+
+      <article>
+        <header class="article-header">
+          <!-- 【改】文章标题 -->
+          <h1>文章标题</h1>
+          <div class="meta">
+            <!-- 【改】日期：datetime 里写 年-月-日，中间写给人看的格式 -->
+            <time datetime="2026-10-23">2026 年 10 月 23 日</time>
+            <span id="reading-time"></span>
+            <!-- 【改】标签：想要几个就写几个 -->
+            <span class="tag">标签一</span>
+            <span class="tag">标签二</span>
+          </div>
+        </header>
+
+        <!-- 【正文】从这里开始写。每个 <h2> 会自动出现在右侧目录里 -->
+        <div class="prose">
+          <p>开头一段，说明这篇文章要讲什么。</p>
+
+          <h2>第一个小标题</h2>
+          <p>内容……</p>
+
+          <h2>第二个小标题</h2>
+          <p>内容……</p>
+        </div>
+
+        <!-- 【改】上一篇 / 下一篇。没有的一边用 <span>，有的一边用 <a> -->
+        <nav class="pager">
+          <a class="card" href="上一篇的文件名.html">← 上一篇<strong>上一篇的短标题</strong></a>
+          <span class="card next">下一篇 →<strong>敬请期待</strong></span>
+        </nav>
+        <a class="back-to-list" href="../blog.html">← 返回博客列表</a>
+      </article>
+
+      <aside>
+        <nav class="toc" aria-label="文章目录">
+          <p class="toc-title">目录</p>
+          <ol id="toc-list"></ol>
+        </nav>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © <span class="year">2026</span> Everett ·
+      <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:hi@yloter.com">邮箱</a>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>
+
+<!--
+  ============================================================
+  正文速查表（复制需要的写法到【正文】里）
+  ------------------------------------------------------------
+  段落          <p>一段文字</p>
+  小标题        <h2>小标题</h2>          （进右侧目录）
+  更小的标题    <h3>更小的标题</h3>      （不进目录）
+  加粗          <strong>重点</strong>
+  链接          <a href="https://example.com">链接文字</a>
+  行内代码      <code>git push</code>
+
+  无序列表      <ul>
+                  <li>第一项</li>
+                  <li>第二项</li>
+                </ul>
+  有序列表      把 ul 换成 ol
+
+  引用          <blockquote>一句引用或提醒</blockquote>
+
+  代码块        <pre><code>第一行代码
+第二行代码</code></pre>
+                注意：代码里如果有 < 和 >，要写成 &lt; 和 &gt;
+                否则浏览器会把它当成网页标签
+
+  图片          <img src="../assets/图片名.jpg" alt="图片说明">
+                （图片放进 assets 文件夹，文件名用英文）
+
+  表格          <table>
+                  <thead><tr><th>列一</th><th>列二</th></tr></thead>
+                  <tbody><tr><td>内容</td><td>内容</td></tr></tbody>
+                </table>
+
+  分隔线        <hr>
+  ============================================================
+-->

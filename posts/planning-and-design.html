@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 每篇文章都要单独写 title 和 description，这是最基础的 SEO -->
+  <title>从零搭建个人网站（一）：规划与设计 · Everett 的笔记</title>
+  <meta name="description" content="动手写代码之前，先想清楚做什么：路线选择、网站地图、线框图和视觉风格。">
+  <!-- 文章在 posts 文件夹里，所以引用其他文件要先用 ../ 退回上一层 -->
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="../index.html">Everett 的笔记</a>
+      <nav class="site-nav">
+        <a href="../index.html">首页</a>
+        <a href="../blog.html" class="active">博客</a>
+        <a href="../about.html">关于</a>
+        <button class="theme-toggle" type="button" aria-label="切换日间/夜间模式">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container article-layout">
+
+      <!-- ========== 左侧：文章 ========== -->
+      <article>
+        <header class="article-header">
+          <h1>从零搭建个人网站（一）：规划与设计</h1>
+          <div class="meta">
+            <time datetime="2026-10-20">2026 年 10 月 20 日</time>
+            <span id="reading-time"></span>  <!-- 阅读时长由 main.js 自动计算 -->
+            <span class="tag">建站</span>
+            <span class="tag">设计</span>
+          </div>
+        </header>
+
+        <!-- 正文从这里开始。所有 <h2> 会被 main.js 自动收集成右侧目录 -->
+        <div class="prose">
+          <p>一直想有个自己的网站。这次决定不用现成的模板，从头到尾自己走一遍：规划、设计、开发、部署。这篇先记录动手写代码之前的准备。</p>
+
+          <h2>先选路线：静态还是动态</h2>
+          <p>个人网站大致有两条路：</p>
+          <ul>
+            <li><strong>纯静态</strong>：HTML、CSS、JavaScript 写好，直接放到 GitHub Pages 这类免费托管上，简单，上线快。</li>
+            <li><strong>前后端分离的动态网站</strong>：前端 Vue，后端 Spring Boot 加 MySQL，可以做后台管理和评论，但工作量大很多。</li>
+          </ul>
+          <p>我选择分两步走：先做静态版，把"写代码 → 上线 → 用域名访问"的流程走通，以后再升级成动态版。域名、DNS、部署这些经验到时候都能直接复用。</p>
+
+          <h2>网站地图：有哪些页面</h2>
+          <p>第一版只做最核心的页面：</p>
+          <table>
+            <thead><tr><th>页面</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr><td>首页</td><td>个人简介和最新文章</td></tr>
+              <tr><td>博客</td><td>全部文章列表</td></tr>
+              <tr><td>文章详情</td><td>所有文章共用一个模板</td></tr>
+              <tr><td>关于</td><td>个人介绍和简历，先合成一页</td></tr>
+              <tr><td>404</td><td>地址错误时显示</td></tr>
+            </tbody>
+          </table>
+          <p>作品集等有两三个作品了再加，不然空着的页面反而显得没做完。</p>
+
+          <h2>线框图：每页放什么</h2>
+          <p>线框图只用灰色方块排版，不考虑颜色和字体。每一步只做一种决定，改起来成本低。</p>
+          <p>最后选定的是：首页左边放个人卡片、右边放文章列表；文章页正文在左，右侧是跟着滚动的目录，会高亮当前读到的小节。</p>
+
+          <h2>视觉风格：长什么样</h2>
+          <p>在九种风格里挑了"温暖杂志风"：米色纸张的背景、衬线字体、赭红色点缀。夜间模式用同一套思路的深棕色版本。</p>
+          <blockquote>所有颜色都写成 CSS 变量，切换主题时只换变量的值。</blockquote>
+          <p>比如正文颜色这样写：</p>
+          <pre><code>body {
+  background: var(--bg);
+  color: var(--text);
+}</code></pre>
+          <p>这个习惯从第一行 CSS 就要养成，以后改颜色、加主题都不用返工。</p>
+
+          <h2>下一步</h2>
+          <p>规划和设计就到这里，下一篇记录开发环境的准备。</p>
+        </div>
+
+        <!-- 上一篇 / 下一篇 -->
+        <nav class="pager">
+          <span class="card">← 上一篇<strong>没有更早的文章了</strong></span>
+          <a class="card next" href="dev-environment.html">下一篇 →<strong>准备开发环境</strong></a>
+        </nav>
+        <a class="back-to-list" href="../blog.html">← 返回博客列表</a>
+      </article>
+
+      <!-- ========== 右侧：目录（内容由 main.js 自动生成） ========== -->
+      <aside>
+        <nav class="toc" aria-label="文章目录">
+          <p class="toc-title">目录</p>
+          <ol id="toc-list"></ol>
+        </nav>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © <span class="year">2026</span> Everett ·
+      <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:hi@yloter.com">邮箱</a>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>

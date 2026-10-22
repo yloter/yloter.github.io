@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Everett 的笔记</title>
+  <meta name="description" content="Everett 的个人网站：记录运维、代码和生活。">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <!-- 在页面显示之前决定用日间还是夜间主题，避免先白后黑闪一下 -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- 中文衬线字体：思源宋体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== 顶部导航（每个页面都有一份相同的） ========== -->
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="index.html">Everett 的笔记</a>
+      <nav class="site-nav">
+        <a href="index.html" class="active">首页</a>
+        <a href="blog.html">博客</a>
+        <a href="about.html">关于</a>
+        <button class="theme-toggle" type="button" aria-label="切换日间/夜间模式">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container home">
+
+      <!-- ========== 左侧：个人卡片 ========== -->
+      <aside class="profile card">
+        <!-- 头像：显示 assets/avatar.jpeg；图片不存在时自动退回字母 E -->
+        <div class="avatar">E<img src="assets/avatar.jpeg" alt="Everett 的头像" onerror="this.remove()"></div>
+        <h1 class="profile-name">Everett</h1>
+        <p class="profile-bio">IT 运维，正在转向软件开发。<br>写写运维、代码和生活。</p>
+        <div class="profile-links">
+          <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>·
+          <a href="mailto:hi@yloter.com">邮箱</a>
+        </div>
+        <div class="profile-tags">
+          <a class="tag" href="blog.html">建站</a>
+          <a class="tag" href="blog.html">前端</a>
+          <a class="tag" href="blog.html">运维</a>
+          <a class="tag" href="blog.html">Java</a>
+          <a class="tag" href="blog.html">宜搭</a>
+          <a class="tag" href="blog.html">生活</a>
+        </div>
+      </aside>
+
+      <!-- ========== 右侧：最新文章 ========== -->
+      <section>
+        <h2 class="section-title">最新文章</h2>
+
+        <!-- 每篇文章一张卡片。新文章写好后，复制一段 <article> 放到最上面 -->
+        <article class="post-card card">
+          <h2><a href="posts/domain-dns-https.html">从零搭建个人网站（三）：域名、DNS 和 HTTPS，每一步到底在干什么</a></h2>
+          <p class="excerpt">从买域名到推送更新：A 记录、CNAME、小云朵、HTTPS 证书、TXT 验证、域名邮箱，每个操作是什么意思、为什么要这么做。</p>
+          <div class="meta">
+            <time datetime="2026-10-22">2026 年 10 月 22 日</time>
+            <span class="tag">建站</span>
+            <span class="tag">DNS</span>
+          </div>
+        </article>
+
+        <article class="post-card card">
+          <h2><a href="posts/dev-environment.html">从零搭建个人网站（二）：准备开发环境</a></h2>
+          <p class="excerpt">静态网站只需要编辑器、浏览器和 Git 三样东西。记录安装 VS Code、Git 和第一次配置的过程。</p>
+          <div class="meta">
+            <time datetime="2026-10-20">2026 年 10 月 20 日</time>
+            <span class="tag">建站</span>
+            <span class="tag">工具</span>
+          </div>
+        </article>
+
+        <article class="post-card card">
+          <h2><a href="posts/planning-and-design.html">从零搭建个人网站（一）：规划与设计</a></h2>
+          <p class="excerpt">动手写代码之前，先想清楚做什么：路线选择、网站地图、线框图和视觉风格。</p>
+          <div class="meta">
+            <time datetime="2026-10-20">2026 年 10 月 20 日</time>
+            <span class="tag">建站</span>
+            <span class="tag">设计</span>
+          </div>
+        </article>
+
+        <a class="more-link" href="blog.html">查看全部文章 →</a>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========== 页脚（每个页面都有一份相同的） ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      © <span class="year">2026</span> Everett ·
+      <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:hi@yloter.com">邮箱</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

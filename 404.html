@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>页面不存在 · Everett 的笔记</title>
+  <!-- 404 页可能出现在任何路径下，所以这里的链接都用 / 开头的绝对路径 -->
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="/index.html">Everett 的笔记</a>
+      <nav class="site-nav">
+        <a href="/index.html">首页</a>
+        <a href="/blog.html">博客</a>
+        <a href="/about.html">关于</a>
+        <button class="theme-toggle" type="button" aria-label="切换日间/夜间模式">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container not-found">
+      <p class="code">404</p>
+      <h1>这一页走丢了</h1>
+      <p>你要找的页面不存在，可能是地址输错了，也可能是文章已经搬家。</p>
+      <p><a href="/index.html">← 回到首页</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © <span class="year">2026</span> Everett
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

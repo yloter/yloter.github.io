@@ -1,0 +1,405 @@
+/* =========================================================
+   Everett 的笔记 · 全站样式
+   风格：日间「温暖杂志风」/ 夜间「夜读暖色」
+   规则：所有颜色只用下面的变量，切换主题时只换变量的值
+   ========================================================= */
+
+/* ---------- 1. 设计变量（日间） ---------- */
+:root {
+  --bg: #f6f1e7;        /* 页面背景：米色纸张 */
+  --card: #fbf8f2;      /* 卡片背景 */
+  --text: #2b2622;      /* 正文文字 */
+  --muted: #7a6f64;     /* 次要文字：日期、摘要 */
+  --accent: #b5532c;    /* 强调色：赭红 */
+  --line: #e3d9c8;      /* 边框、分隔线 */
+  --code-bg: #efe7d8;   /* 代码块背景 */
+
+  --font-serif: Georgia, "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-mono: Consolas, "Courier New", monospace;
+
+  --radius: 2px;
+  --page-width: 1100px;     /* 整页最大宽度 */
+  --content-width: 720px;   /* 正文最大宽度，保证一行不会太长 */
+
+  color-scheme: light;
+}
+
+/* ---------- 2. 夜间变量：只覆盖颜色 ---------- */
+[data-theme="dark"] {
+  --bg: #1f1b16;
+  --card: #2a251e;
+  --text: #efe6d6;
+  --muted: #a39886;
+  --accent: #e0a458;
+  --line: #3a332a;
+  --code-bg: #2f2921;
+
+  color-scheme: dark;
+}
+
+/* ---------- 3. 基础样式 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.85;
+  transition: background-color .2s, color .2s;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+h1, h2, h3 { line-height: 1.4; font-weight: 700; margin: 0 0 .6em; }
+h1 { font-size: 28px; }
+h2 { font-size: 22px; }
+h3 { font-size: 18px; }
+
+img { max-width: 100%; height: auto; }
+
+/* 页面内容的统一外框：居中 + 最大宽度 + 左右留白 */
+.container {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+main { padding: 40px 0 64px; min-height: 70vh; }
+
+/* ---------- 4. 顶部导航 ---------- */
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.site-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+}
+.site-title:hover { text-decoration: none; color: var(--accent); }
+
+.site-nav { display: flex; align-items: center; gap: 24px; }
+.site-nav a { color: var(--muted); font-size: 15px; }
+.site-nav a:hover { color: var(--accent); text-decoration: none; }
+.site-nav a.active { color: var(--accent); }   /* 当前所在页面 */
+
+/* 日间 / 夜间切换按钮 */
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- 5. 页脚 ---------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 24px 0;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+}
+.site-footer a { color: var(--muted); margin: 0 8px; }
+.site-footer a:hover { color: var(--accent); }
+
+/* ---------- 6. 通用小组件 ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 1px 8px;
+  margin: 0 6px 6px 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--accent);
+}
+a.tag:hover { border-color: var(--accent); text-decoration: none; }
+
+.meta { color: var(--muted); font-size: 14px; }
+
+.section-title {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: .1em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+/* ---------- 7. 首页：左侧个人卡片 + 右侧文章列表 ---------- */
+.home {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.profile {
+  padding: 28px 24px;
+  text-align: center;
+  position: sticky;   /* 滚动时卡片停在顶部 */
+  top: 24px;
+}
+.avatar {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+/* 有头像图片时，图片盖在字母 E 上面 */
+.avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* 不管原图什么比例，都裁成正圆不变形 */
+}
+.profile-name { font-size: 22px; margin: 0; }
+.profile-bio { color: var(--muted); font-size: 15px; margin: 6px 0 16px; line-height: 1.7; }
+.profile-links { font-size: 14px; margin-bottom: 18px; }
+.profile-links a { margin: 0 6px; }
+.profile-tags { border-top: 1px solid var(--line); padding-top: 16px; }
+
+/* 文章卡片 */
+.post-card {
+  padding: 22px 26px;
+  margin-bottom: 18px;
+  transition: border-color .2s;
+}
+.post-card:hover { border-color: var(--accent); }
+.post-card h2 { font-size: 20px; margin-bottom: 6px; }
+.post-card h2 a { color: var(--text); }
+.post-card h2 a:hover { color: var(--accent); text-decoration: none; }
+.post-card .excerpt { color: var(--muted); font-size: 15px; margin: 0 0 10px; }
+.post-card .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.post-card .meta .tag { margin: 0; }
+
+.more-link { display: inline-block; margin-top: 4px; font-size: 15px; }
+
+/* ---------- 8. 博客列表页 ---------- */
+.page-head { max-width: var(--content-width); margin-bottom: 32px; }
+.page-head p { color: var(--muted); margin: 0; }
+
+.post-list { list-style: none; padding: 0; margin: 0; max-width: var(--content-width); }
+.post-list li {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.post-list time { color: var(--muted); font-size: 14px; flex: 0 0 96px; padding-top: 2px; }
+.post-list a.title { color: var(--text); font-size: 18px; }
+.post-list a.title:hover { color: var(--accent); }
+.post-list .tags { margin-top: 6px; }
+
+/* ---------- 9. 文章页：正文 + 右侧目录 ---------- */
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, var(--content-width)) 220px;
+  gap: 56px;
+  justify-content: center;
+}
+
+.article-header { margin-bottom: 32px; }
+.article-header h1 { font-size: 30px; margin-bottom: 10px; }
+.article-header .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.article-header .meta .tag { margin: 0; }
+
+/* 正文排版：所有文章内容都放在 .prose 里 */
+.prose h2 {
+  margin-top: 2em;
+  padding-top: .2em;
+  scroll-margin-top: 24px;   /* 点目录跳转时，标题不贴着屏幕顶 */
+}
+.prose h3 { margin-top: 1.6em; scroll-margin-top: 24px; }
+.prose p { margin: 0 0 1.2em; }
+.prose ul, .prose ol { padding-left: 1.4em; margin: 0 0 1.2em; }
+.prose li { margin-bottom: .3em; }
+.prose blockquote {
+  margin: 0 0 1.2em;
+  padding: 4px 18px;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: italic;
+}
+.prose hr { border: none; border-top: 1px solid var(--line); margin: 2.4em 0; }
+.prose table { border-collapse: collapse; width: 100%; margin-bottom: 1.2em; font-size: 15px; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 6px 12px; text-align: left; }
+.prose th { background: var(--card); }
+
+/* 行内代码 */
+.prose code {
+  font-family: var(--font-mono);
+  font-size: .88em;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: var(--radius);
+}
+/* 代码块 */
+.prose pre {
+  position: relative;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  overflow-x: auto;          /* 代码太长时横向滚动，不撑破页面 */
+  line-height: 1.6;
+  margin: 0 0 1.4em;
+}
+.prose pre code { background: none; padding: 0; font-size: 14px; }
+
+/* 代码块右上角的复制按钮（由 main.js 自动添加） */
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-family: var(--font-serif);
+  font-size: 12px;
+  padding: 2px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.prose pre:hover .copy-btn, .copy-btn:focus { opacity: 1; }
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* 上一篇 / 下一篇 */
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 48px;
+}
+.pager a, .pager span {
+  display: block;
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.pager a:hover { border-color: var(--accent); text-decoration: none; }
+.pager strong { display: block; color: var(--text); font-size: 16px; margin-top: 2px; }
+.pager .next { text-align: right; }
+.back-to-list { display: inline-block; margin-top: 24px; font-size: 15px; }
+
+/* 右侧目录 */
+.toc {
+  position: sticky;
+  top: 32px;
+  font-size: 14px;
+  border-left: 1px solid var(--line);
+  padding-left: 18px;
+}
+.toc-title { color: var(--text); font-weight: 700; margin: 0 0 10px; }
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li { margin-bottom: 8px; line-height: 1.5; }
+.toc a { color: var(--muted); }
+.toc a:hover { color: var(--accent); text-decoration: none; }
+.toc a.active { color: var(--accent); }   /* 当前读到的小节 */
+
+/* 回到顶部按钮（滚动一段距离后出现） */
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---------- 10. 关于我 · 简历 ---------- */
+.about { max-width: var(--content-width); margin: 0 auto; }
+.about-intro { display: flex; gap: 24px; align-items: center; margin-bottom: 40px; }
+.about-intro .avatar { margin: 0; flex: 0 0 88px; }
+.about-intro p { margin: 0; color: var(--muted); }
+.resume-section { margin-bottom: 40px; }
+.resume-item { margin-bottom: 20px; }
+.resume-item .row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.resume-item h3 { margin: 0; }
+.resume-item .meta { white-space: nowrap; }
+.resume-item p, .resume-item ul { margin: 4px 0 0; }
+.resume-item ul { padding-left: 1.3em; }
+.download-btn {
+  display: inline-block;
+  padding: 8px 20px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  font-size: 15px;
+}
+.download-btn:hover { background: var(--accent); color: var(--bg); text-decoration: none; }
+.download-btn.is-disabled { border-color: var(--line); color: var(--muted); cursor: default; }
+.download-btn.is-disabled:hover { background: none; color: var(--muted); }
+
+/* ---------- 11. 404 ---------- */
+.not-found { text-align: center; padding: 80px 0; }
+.not-found .code { font-size: 96px; line-height: 1; color: var(--accent); margin: 0; }
+.not-found p { color: var(--muted); }
+
+/* ---------- 12. 手机和窄屏适配 ---------- */
+@media (max-width: 900px) {
+  .home { grid-template-columns: 1fr; gap: 28px; }
+  .profile { position: static; }
+
+  .article-layout { grid-template-columns: minmax(0, 1fr); }
+  .toc { display: none; }   /* 窄屏收起右侧目录 */
+}
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .container { padding: 0 16px; }
+  main { padding: 28px 0 48px; }
+  .site-nav { gap: 14px; }
+  .site-title { font-size: 17px; }
+  .article-header h1 { font-size: 24px; }
+  .post-card { padding: 18px; }
+  .post-list li { flex-direction: column; gap: 2px; }
+  .post-list time { flex: none; }
+  .pager { grid-template-columns: 1fr; }
+  .about-intro { flex-direction: column; text-align: center; }
+  .copy-btn { opacity: 1; }   /* 手机没有鼠标悬停，复制按钮一直显示 */
+}

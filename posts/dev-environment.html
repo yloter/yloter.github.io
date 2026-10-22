@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>从零搭建个人网站（二）：准备开发环境 · Everett 的笔记</title>
+  <meta name="description" content="静态网站只需要编辑器、浏览器和 Git。记录安装 VS Code、Git 和第一次配置的过程。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="../index.html">Everett 的笔记</a>
+      <nav class="site-nav">
+        <a href="../index.html">首页</a>
+        <a href="../blog.html" class="active">博客</a>
+        <a href="../about.html">关于</a>
+        <button class="theme-toggle" type="button" aria-label="切换日间/夜间模式">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container article-layout">
+
+      <article>
+        <header class="article-header">
+          <h1>从零搭建个人网站（二）：准备开发环境</h1>
+          <div class="meta">
+            <time datetime="2026-10-20">2026 年 10 月 20 日</time>
+            <span id="reading-time"></span>
+            <span class="tag">建站</span>
+            <span class="tag">工具</span>
+          </div>
+        </header>
+
+        <div class="prose">
+          <p>做纯静态网站，需要的东西比想象中少：一个编辑器、一个浏览器、一个 Git。Node.js 和 IDEA 等到做动态版时再装。</p>
+
+          <h2>安装 VS Code</h2>
+          <p>在官网下载 Windows 版的 User Installer。安装时"其他任务"那一页建议全部勾选，尤其是：</p>
+          <ul>
+            <li><strong>添加到 PATH</strong>：以后在命令行输入 <code>code</code> 就能打开</li>
+            <li><strong>通过 Code 打开</strong>：右键文件夹直接用 VS Code 打开</li>
+          </ul>
+          <p>装好后再装一个扩展 <strong>Live Server</strong>：在 HTML 文件上右键选 "Open with Live Server"，浏览器会打开页面，以后每次保存都自动刷新。</p>
+
+          <h2>安装 Git</h2>
+          <p>安装向导大部分保持默认，只改两处：</p>
+          <ol>
+            <li>默认编辑器选 Visual Studio Code</li>
+            <li>初始分支名选 Override，填 <code>main</code></li>
+          </ol>
+
+          <h2>确认安装成功</h2>
+          <p>打开 PowerShell，输入下面两条命令，都能显示版本号就说明成功了：</p>
+          <pre><code>code --version
+git --version</code></pre>
+          <p>如果提示"无法识别"，关掉 PowerShell 重新打开再试，刚装好的软件只有新开的窗口才能识别。</p>
+
+          <h2>告诉 Git 你是谁</h2>
+          <p>Git 每次提交都会记录作者，第一次使用要先设置名字和邮箱：</p>
+          <pre><code>git config --global user.name "Everett"
+git config --global user.email "you@example.com"</code></pre>
+          <p>邮箱最好和 GitHub 账号用同一个，这样提交记录能关联到你的账号。</p>
+
+          <h2>下一步</h2>
+          <p>环境准备好了，接下来就是写页面，然后部署到 GitHub Pages。</p>
+        </div>
+
+        <nav class="pager">
+          <a class="card" href="planning-and-design.html">← 上一篇<strong>规划与设计</strong></a>
+          <a class="card next" href="domain-dns-https.html">下一篇 →<strong>域名、DNS 和 HTTPS</strong></a>
+        </nav>
+        <a class="back-to-list" href="../blog.html">← 返回博客列表</a>
+      </article>
+
+      <aside>
+        <nav class="toc" aria-label="文章目录">
+          <p class="toc-title">目录</p>
+          <ol id="toc-list"></ol>
+        </nav>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © <span class="year">2026</span> Everett ·
+      <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:hi@yloter.com">邮箱</a>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>

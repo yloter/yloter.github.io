@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于 · Everett 的笔记</title>
+  <meta name="description" content="关于 Everett：个人介绍与简历。">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="index.html">Everett 的笔记</a>
+      <nav class="site-nav">
+        <a href="index.html">首页</a>
+        <a href="blog.html">博客</a>
+        <a href="about.html" class="active">关于</a>
+        <button class="theme-toggle" type="button" aria-label="切换日间/夜间模式">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container about">
+
+      <!-- ========== 关于我：随意一点的介绍 ========== -->
+      <div class="about-intro">
+        <div class="avatar">E<img src="assets/avatar.jpeg" alt="Everett 的头像" onerror="this.remove()"></div>
+        <div>
+          <h1>你好，我是 Everett</h1>
+          <p>一名 IT 运维，正在从硬件运维转向软件开发。这个网站是我从零开始搭建的，用来记录学习和工作中的东西。</p>
+        </div>
+      </div>
+
+      <!-- ========== 简历 ==========
+           只写笼统的经历：不写公司名、规模、内部系统和具体年份，
+           避免认识的人把网站和你本人、你的公司对上号 -->
+      <section class="resume-section">
+        <h2 class="section-title">技能</h2>
+        <div>
+          <span class="tag">Java</span>
+          <span class="tag">Spring Boot</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">HTML / CSS / JavaScript</span>
+          <span class="tag">低代码</span>
+          <span class="tag">硬件运维</span>
+          <span class="tag">Git</span>
+        </div>
+      </section>
+
+      <section class="resume-section">
+        <h2 class="section-title">工作经历</h2>
+        <div class="resume-item">
+          <div class="row">
+            <h3>IT 运维 · 电商行业</h3>
+            <span class="meta">至今</span>
+          </div>
+          <ul>
+            <li>负责公司办公电脑、设备与网络的日常运维</li>
+            <li>学习低代码开发，参与公司内部系统建设</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="resume-section">
+        <h2 class="section-title">项目</h2>
+        <div class="resume-item">
+          <div class="row">
+            <h3>个人网站（本站）</h3>
+            <span class="meta">2026</span>
+          </div>
+          <p>从规划、设计到部署完整走一遍。HTML / CSS / JavaScript 手写，支持日夜间模式。</p>
+        </div>
+        <div class="resume-item">
+          <div class="row">
+            <h3>苍穹外卖</h3>
+            <span class="meta">在校期间</span>
+          </div>
+          <p>基于 Spring Boot 的外卖点餐系统，包含管理端和用户端。</p>
+        </div>
+      </section>
+
+      <section class="resume-section">
+        <h2 class="section-title">教育</h2>
+        <div class="resume-item">
+          <div class="row">
+            <h3>软件工程 · 本科</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- 简历 PDF 准备好后：放进 assets 文件夹命名为 resume.pdf，
+           再把下面这行换成 <a class="download-btn" href="assets/resume.pdf" download>下载简历 PDF</a> -->
+      <span class="download-btn is-disabled">简历 PDF 整理中</span>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © <span class="year">2026</span> Everett ·
+      <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:hi@yloter.com">邮箱</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

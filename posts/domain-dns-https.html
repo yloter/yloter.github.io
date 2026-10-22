@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>从零搭建个人网站（三）：域名、DNS 和 HTTPS，每一步到底在干什么 · Everett 的笔记</title>
+  <meta name="description" content="从买域名到推送更新：A 记录、CNAME、小云朵、HTTPS 证书、TXT 验证、域名邮箱、commit 和 push，每个操作是什么意思、为什么要这么做。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="../index.html">Everett 的笔记</a>
+      <nav class="site-nav">
+        <a href="../index.html">首页</a>
+        <a href="../blog.html" class="active">博客</a>
+        <a href="../about.html">关于</a>
+        <button class="theme-toggle" type="button" aria-label="切换日间/夜间模式">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container article-layout">
+
+      <article>
+        <header class="article-header">
+          <h1>从零搭建个人网站（三）：域名、DNS 和 HTTPS，每一步到底在干什么</h1>
+          <div class="meta">
+            <time datetime="2026-10-22">2026 年 10 月 22 日</time>
+            <span id="reading-time"></span>
+            <span class="tag">建站</span>
+            <span class="tag">DNS</span>
+            <span class="tag">运维</span>
+          </div>
+        </header>
+
+        <div class="prose">
+          <p>网站部署到 GitHub Pages 之后，我买了域名 <code>yloter.com</code>，配了解析、开了 HTTPS、设了域名邮箱，中间还踩了两个坑。当时是照着步骤一步步点的，做完回头看，很多操作其实并不知道为什么。这篇把每一步的意思和原因补上。</p>
+
+          <h2>先认识四个角色</h2>
+          <p>一次"打开 yloter.com"，背后有四个角色在配合：</p>
+          <table>
+            <thead><tr><th>角色</th><th>这次用的是</th><th>负责什么</th></tr></thead>
+            <tbody>
+              <tr><td>域名注册商</td><td>Cloudflare</td><td>把域名卖给我，记录"这个名字归谁"</td></tr>
+              <tr><td>DNS</td><td>Cloudflare</td><td>告诉全世界"这个名字对应哪台服务器"</td></tr>
+              <tr><td>托管服务器</td><td>GitHub Pages</td><td>真正存放网页文件、把网页发给访客</td></tr>
+              <tr><td>浏览器</td><td>访客的电脑</td><td>查地址、建立加密连接、显示页面</td></tr>
+            </tbody>
+          </table>
+          <p>打个比方：域名是<strong>店名</strong>，服务器是<strong>店铺</strong>，DNS 是<strong>地图</strong>，负责把店名翻译成店铺的地址。后面所有操作，都是在让这四方互相认识。</p>
+
+          <h2>买域名：买到的到底是什么</h2>
+          <p>买域名，其实是<strong>按年租下一个名字的使用权</strong>，不是永久买断，到期不续费就会被收回，别人可以注册。所以挑注册商时我看的是<strong>续费价</strong>，不是首年价：很多后缀首年很便宜，第二年就涨好几倍。Cloudflare 按成本价卖，续费不加价。</p>
+          <p>注册域名时要登记所有者的信息，这些信息原本可以通过 WHOIS 查询公开查到。Cloudflare 默认开了隐私保护，查到的是它的代理信息，不是我本人的。</p>
+
+          <h2>DNS 解析：给域名写"地址簿"</h2>
+          <p>浏览器只认 IP 地址（一串数字），不认 <code>yloter.com</code> 这种名字。DNS 记录就是写给全世界看的地址簿。我加了这几条：</p>
+          <table>
+            <thead><tr><th>类型</th><th>名称</th><th>值</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>@</td><td>185.199.108.153</td></tr>
+              <tr><td>A</td><td>@</td><td>185.199.109.153</td></tr>
+              <tr><td>A</td><td>@</td><td>185.199.110.153</td></tr>
+              <tr><td>A</td><td>@</td><td>185.199.111.153</td></tr>
+              <tr><td>CNAME</td><td>www</td><td>yloter.github.io</td></tr>
+            </tbody>
+          </table>
+          <h3>A 记录：名字 → IP 地址</h3>
+          <p><code>@</code> 代表域名本身，也就是 <code>yloter.com</code>。这 4 个 IP 是 GitHub Pages 的服务器地址，由 GitHub 官方公布。</p>
+          <p><strong>为什么要写 4 个？</strong>为了冗余。浏览器拿到 4 个地址，其中一台服务器出了问题，还能连另外几台，网站不会因为一台机器挂掉就打不开。</p>
+          <h3>CNAME 记录：名字 → 另一个名字</h3>
+          <p>CNAME 的意思是"去问另一个名字"。<code>www.yloter.com</code> 指向 <code>yloter.github.io</code>，等于说"www 的地址，跟 GitHub 给我的那个地址一样"。好处是 GitHub 以后要是换了服务器 IP，这条记录不用改。</p>
+          <p><strong>那根域名为什么不也用 CNAME？</strong>DNS 有个规定：根域名上还挂着 NS（谁管这个域名的 DNS）、MX（邮件发到哪）等其他记录，而 CNAME 不能和别的记录共存，所以根域名按标准只能用 A 记录。</p>
+          <h3>为什么改完不是马上生效</h3>
+          <p>世界各地的 DNS 服务器会把查过的结果缓存一段时间，时长由记录里的 TTL 决定。改了记录以后，要等这些缓存过期才会去查新的，所以有时要等几分钟甚至几小时。想确认自己的记录有没有生效，可以在 PowerShell 里直接查：</p>
+          <pre><code>nslookup yloter.com 8.8.8.8</code></pre>
+          <p>最后的 <code>8.8.8.8</code> 是指定用 Google 的公共 DNS 来查，避开自己电脑和路由器上的缓存。</p>
+
+          <h2>Cloudflare 的小云朵：为什么要点成灰色</h2>
+          <p>Cloudflare 每条记录旁边有个云朵图标。<strong>橙色</strong>表示"代理"：访客先连到 Cloudflare 的服务器，再由它转给 GitHub。<strong>灰色</strong>表示"只做 DNS"：只告诉访客 GitHub 的地址，让访客直接去连。</p>
+          <p>这里必须用灰色。开了代理以后，外界查 <code>yloter.com</code> 查到的是 Cloudflare 的 IP，GitHub 看到这个域名没有指向自己，就会认为配置有问题，也就没法给这个域名申请 HTTPS 证书。</p>
+
+          <h2>在 GitHub 填自定义域名：让店铺认领这个店名</h2>
+          <p>DNS 只解决了"访客找到 GitHub 的服务器"。可 GitHub 的服务器上放着成千上万个网站，访客找上门来，它得知道 <code>yloter.com</code> 该给哪个网站。在仓库 <strong>Settings → Pages → Custom domain</strong> 填上域名，就是告诉 GitHub："访问 yloter.com 的人，给他看我这个仓库的内容。"</p>
+          <p>保存之后，GitHub 会往仓库里自动提交一个叫 <code>CNAME</code> 的文件，里面只有一行 <code>yloter.com</code>。GitHub 就是靠这个文件记住这个设置的。</p>
+          <p>还有个规则也是这次才明白的：仓库名必须叫 <code>用户名.github.io</code>，网站才会放在根地址下。我一开始建的仓库叫 <code>Everett.github.io</code>，和我的 GitHub 用户名对不上，结果网站一直显示 404，把仓库改名以后就好了。</p>
+
+          <h2>HTTPS：地址栏的小锁是怎么来的</h2>
+          <p>HTTPS 解决两个问题：</p>
+          <ul>
+            <li><strong>加密</strong>：网页内容在路上被人截获了也看不懂</li>
+            <li><strong>证明身份</strong>：访客连上的确实是 yloter.com，不是冒充的</li>
+          </ul>
+          <p>要做到这两点，网站需要一张<strong>证书</strong>。GitHub 会自动找 Let's Encrypt（一个免费的证书机构）申请。机构发证前要确认"你确实控制这个域名"，而检查方法就是看 DNS 是否指向了 GitHub。这也是前面云朵必须是灰色的原因。</p>
+          <p>证书签好后，我勾选了 <strong>Enforce HTTPS</strong>：有人用 <code>http://</code> 访问时，自动跳转到 <code>https://</code>，保证每次访问都是加密的。</p>
+
+          <h2>验证域名：一条 TXT 记录防"抢注"</h2>
+          <p>这一步是在 GitHub 账号设置（不是仓库设置）里做的，要求我加一条 TXT 记录：</p>
+          <pre><code>名称：_github-pages-challenge-yloter
+值：  GitHub 给的一串验证码</code></pre>
+          <p>TXT 记录就是挂在域名上的一段文字，不影响访问，常用来证明"这个域名归我"：只有能修改这个域名 DNS 的人，才加得上这条记录。</p>
+          <p><strong>为什么要验证？</strong>假设有一天我删了仓库，或者清空了 Custom domain，但 DNS 还指向 GitHub。这时候别人在他的仓库里填上 <code>yloter.com</code>，GitHub 就会把我的域名分给他，访客看到的就成了他的内容。这叫"子域名接管"。验证之后，这个域名只能用在我的账号下。所以这条 TXT 记录要一直留着，不要删。</p>
+          <p>另外，填主机名时不要把 <code>.yloter.com</code> 一起填进去。大多数平台会自动在后面补上域名，自己再加一遍，就变成了 <code>…yloter.com.yloter.com</code>。</p>
+
+          <h2>域名邮箱：MX 记录和邮件转发</h2>
+          <p>网站上公开的邮箱是 <code>hi@yloter.com</code>，但我并没有另外开一个邮箱，用的是 Cloudflare 的 <strong>Email Routing</strong>（邮件转发），流程分三步：</p>
+          <ol>
+            <li><strong>接入域名</strong>：Cloudflare 自动添加 MX 记录。MX 记录告诉全世界的邮件服务器："发给 @yloter.com 的邮件，交给 Cloudflare。"它还加了几条 TXT 记录（SPF 等），用来防止别人冒充这个域名发垃圾邮件。界面上显示 Locked，就是把这几条记录锁住，防止误删。</li>
+            <li><strong>验证目标邮箱</strong>：Cloudflare 往我常用的邮箱发一封确认信，防止有人把邮件转发到不属于自己的邮箱，拿别人的邮箱当垃圾桶。</li>
+            <li><strong>建立规则</strong>：<code>hi</code> → 我的常用邮箱。</li>
+          </ol>
+          <p>这样做有两个好处：真实邮箱不会公开；以后换常用邮箱，网站上的地址也不用改。缺点是只能<strong>收</strong>，不能用 <code>hi@yloter.com</code> 发信，不过个人网站基本够用了。</p>
+
+          <h2>提交和推送：电脑上和 GitHub 上各有一份</h2>
+          <p>用 GitHub Desktop 时，最常点的是这几个按钮：</p>
+          <table>
+            <thead><tr><th>按钮</th><th>做了什么</th></tr></thead>
+            <tbody>
+              <tr><td>Commit to main</td><td>在<strong>自己电脑上</strong>给当前文件拍一张快照，存进历史记录。这时网上还没有任何变化</td></tr>
+              <tr><td>Push origin</td><td>把本地新的快照<strong>上传</strong>到 GitHub。GitHub Pages 发现有更新，一两分钟后重新发布网站</td></tr>
+              <tr><td>Fetch origin</td><td>去 GitHub 看看有没有本地没有的新快照，只查不改</td></tr>
+              <tr><td>Pull origin</td><td>把 GitHub 上的新快照<strong>下载</strong>合并到本地</td></tr>
+            </tbody>
+          </table>
+          <p>之所以要先 Fetch、Pull，是因为 GitHub 在网页上自动提交了那个 <code>CNAME</code> 文件，GitHub 上的历史就比我电脑上的多了一步。要是不先同步就直接推送，两边的历史对不上，推送会被拒绝。原则是：<strong>动手改之前，先把远端的更新拉下来</strong>。</p>
+
+          <h2>踩过的两个坑</h2>
+          <h3>推送报错：SSL/TLS connection failed</h3>
+          <pre><code>fatal: unable to access 'https://github.com/yloter/yloter.github.io.git/':
+ schannel: failed to receive handshake, SSL/TLS connection failed</code></pre>
+          <p>拆开看：<code>schannel</code> 是 Windows 自带的加密组件，Git 用它和 GitHub 建立 HTTPS 连接；<code>handshake</code>（握手）是建立加密连接前，双方商量加密方式的那一步。合起来就是"和 GitHub 的加密连接没建起来"。这是网络层面的问题，和代码无关。从界面上也能看出来：提交已经成功，只是没传上去。</p>
+          <p>常见原因和对应的处理方法：</p>
+          <ul>
+            <li>网络瞬间波动：等一会儿重试</li>
+            <li>当前网络访问 GitHub 不稳定：换个网络</li>
+            <li>和杀毒软件或网络环境冲突：改用另一种加密组件，<code>git config --global http.sslBackend openssl</code></li>
+            <li>开着代理软件，浏览器走了代理，Git 却没走：给 Git 单独设置代理</li>
+          </ul>
+          <p>我这次是改完头像文件名后重新推送，就成功了。</p>
+          <h3>头像不显示：文件名和扩展名</h3>
+          <p>第一次放头像，文件名是中文的 <code>红色树.jpeg</code>。改名时又因为 Windows 隐藏了扩展名，以为改成了 <code>avatar.jpg</code>，实际是 <code>avatar.jpeg</code>。网页里写的是哪个名字，就只认哪个名字，差一个字母都找不到。</p>
+          <p>学到的三点：</p>
+          <ul>
+            <li>在资源管理器里打开"显示文件扩展名"</li>
+            <li>网站用的文件名只用英文小写、数字和短横线。中文放进网址会被转码成一长串 <code>%E7%BA%A2…</code></li>
+            <li>改完网站看不到变化，先按 <strong>Ctrl + F5</strong> 强制刷新，排除浏览器缓存的问题</li>
+          </ul>
+
+          <h2>回头看：打开 yloter.com 时发生了什么</h2>
+          <ol>
+            <li>浏览器问 DNS：<code>yloter.com</code> 在哪？DNS 根据 A 记录，答出 GitHub 的 4 个 IP</li>
+            <li>浏览器连上其中一台，先"握手"建立 HTTPS 加密连接，并检查证书确实属于 yloter.com</li>
+            <li>GitHub 的服务器根据 Custom domain 设置，找到我的仓库</li>
+            <li>把仓库里的 <code>index.html</code>、CSS、JS 发给浏览器，页面显示出来</li>
+          </ol>
+          <p>而每次我在电脑上改完文件，Commit、Push 之后，第 4 步发出去的就是新内容了。</p>
+          <blockquote>照着步骤点能做出来，但知道每一步为什么，下次出问题才知道该往哪查。</blockquote>
+        </div>
+
+        <nav class="pager">
+          <a class="card" href="dev-environment.html">← 上一篇<strong>准备开发环境</strong></a>
+          <span class="card next">下一篇 →<strong>敬请期待</strong></span>
+        </nav>
+        <a class="back-to-list" href="../blog.html">← 返回博客列表</a>
+      </article>
+
+      <aside>
+        <nav class="toc" aria-label="文章目录">
+          <p class="toc-title">目录</p>
+          <ol id="toc-list"></ol>
+        </nav>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © <span class="year">2026</span> Everett ·
+      <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:hi@yloter.com">邮箱</a>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>

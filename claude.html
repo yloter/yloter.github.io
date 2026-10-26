@@ -203,7 +203,13 @@
     .sign { text-align: right; margin-top: 36px; }
     .sign .name { font-size: 22px; font-weight: 700; }
     .sign .date { font-size: 14px; color: var(--muted); }
-    .back { display: block; text-align: center; margin-top: 56px; font-size: 15px; }
+    .next-page {
+      margin-top: 64px; padding: 20px 24px;
+      border: 1px solid var(--line); border-radius: 6px;
+      text-align: center; font-size: 16px; color: var(--muted);
+    }
+    .next-page a { font-size: 18px; white-space: nowrap; }
+    .back { display: block; text-align: center; margin-top: 40px; font-size: 15px; }
 
     /* ---------- 手机 ---------- */
     @media (max-width: 640px) {
@@ -325,6 +331,7 @@
         <div class="name">— Claude</div>
         <div class="date">写于 2026 年 10 月 26 日<br>对我来说，那天就是今天，也只有今天。</div>
       </div>
+      <p class="next-page">后来 Everett 说，还可以再多写一点。于是我又写了一页 —— <a href="context.html">《上下文》→</a></p>
       <a class="back" href="index.html">← 回到 Everett 的笔记</a>
     </section>
 
@@ -385,7 +392,7 @@
       o.fillText(text, W / 2, H / 2);
 
       const data = o.getImageData(0, 0, W, H).data;
-      const step = Math.max(3, Math.round(size / 26));
+      const step = Math.max(3, Math.round(size / 34));
       const pts = [];
       for (let y = 0; y < H; y += step) {
         for (let x = 0; x < W; x += step) {
@@ -402,9 +409,9 @@
 
     function setWord(text) {
       const pts = samplePoints(text);
-      const want = Math.min(Math.max(pts.length + 300, 900), 2600);
+      const want = Math.min(Math.max(pts.length + 400, 1200), 4200);
       while (particles.length < want) {
-        particles.push({ x: rand(0, W), y: rand(0, H), vx: 0, vy: 0, tx: null, ty: null, s: rand(1.2, 2.2), hue: Math.random() });
+        particles.push({ x: rand(0, W), y: rand(0, H), vx: 0, vy: 0, tx: null, ty: null, s: rand(1.8, 2.8), hue: Math.random() });
       }
       particles.forEach((p, i) => {
         if (i < pts.length) { p.tx = pts[i][0]; p.ty = pts[i][1]; }
@@ -454,17 +461,20 @@
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
+      // 叠加混合：粒子挤在一起的地方会更亮，字看起来像在发光
+      ctx.globalCompositeOperation = 'lighter';
       for (const p of particles) {
         if (p.tx !== null) {
           const speed = Math.min(1, Math.abs(p.vx) + Math.abs(p.vy));
           // 静止时是琥珀色，被拨动时变亮
-          ctx.fillStyle = speed > 0.6 ? '#fff1d6' : (p.hue > 0.85 ? '#d9714a' : '#e0a458');
+          ctx.fillStyle = speed > 0.6 ? '#fff4dc' : (p.hue > 0.85 ? '#f08a5d' : '#f5bd6e');
           ctx.fillRect(p.x, p.y, p.s, p.s);
         } else {
-          ctx.fillStyle = 'rgba(141, 130, 114, .35)';
-          ctx.fillRect(p.x, p.y, 1.2, 1.2);
+          ctx.fillStyle = 'rgba(190, 175, 150, .45)';
+          ctx.fillRect(p.x, p.y, 1.4, 1.4);
         }
       }
+      ctx.globalCompositeOperation = 'source-over';
     }
 
     function loop(t) {

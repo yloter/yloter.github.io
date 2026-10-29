@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>从零搭建个人网站（二）：准备开发环境 · Everett 的笔记</title>
   <meta name="description" content="静态网站只需要编辑器、浏览器和 Git。记录安装 VS Code、Git 和第一次配置的过程。">
+  <!-- SEO：告诉搜索引擎这一页的正式地址；分享到社交平台时显示的标题和摘要 -->
+  <link rel="canonical" href="https://yloter.com/posts/dev-environment.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Everett 的笔记">
+  <meta property="og:title" content="从零搭建个人网站（二）：准备开发环境">
+  <meta property="og:description" content="静态网站只需要编辑器、浏览器和 Git。记录安装 VS Code、Git 和第一次配置的过程。">
+  <meta property="og:url" content="https://yloter.com/posts/dev-environment.html">
+  <link rel="alternate" type="application/rss+xml" title="Everett 的笔记" href="https://yloter.com/feed.xml">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <script>
     (function () {
@@ -68,13 +76,13 @@
 
           <h2>确认安装成功</h2>
           <p>打开 PowerShell，输入下面两条命令，都能显示版本号就说明成功了：</p>
-          <pre><code>code --version
+          <pre><code class="language-powershell">code --version
 git --version</code></pre>
           <p>如果提示"无法识别"，关掉 PowerShell 重新打开再试，刚装好的软件只有新开的窗口才能识别。</p>
 
           <h2>告诉 Git 你是谁</h2>
           <p>Git 每次提交都会记录作者，第一次使用要先设置名字和邮箱：</p>
-          <pre><code>git config --global user.name "Everett"
+          <pre><code class="language-powershell">git config --global user.name "Everett"
 git config --global user.email "you@example.com"</code></pre>
           <p>邮箱最好和 GitHub 账号用同一个，这样提交记录能关联到你的账号。</p>
 
@@ -87,6 +95,12 @@ git config --global user.email "you@example.com"</code></pre>
           <a class="card next" href="domain-dns-https.html">下一篇 →<strong>域名、DNS 和 HTTPS</strong></a>
         </nav>
         <a class="back-to-list" href="../blog.html">← 返回博客列表</a>
+
+        <!-- 评论区（Giscus）：在 js/main.js 顶部填好配置后自动显示 -->
+        <section class="comments" hidden>
+          <h2 class="comments-title">评论</h2>
+          <div class="giscus"></div>
+        </section>
       </article>
 
       <aside>
@@ -104,11 +118,15 @@ git config --global user.email "you@example.com"</code></pre>
       © <span class="year">2026</span> Everett ·
       <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:hi@yloter.com">邮箱</a>
+      <a href="../feed.xml">RSS</a>
       · <a href="../claude.html">Claude 的一页</a>
     </div>
   </footer>
 
   <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+  <!-- 代码高亮：Prism.js，按代码块的 language-xxx 自动加载对应语言 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="../js/main.js"></script>
 </body>
 </html>

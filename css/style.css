@@ -14,6 +14,14 @@
   --line: #e3d9c8;      /* 边框、分隔线 */
   --code-bg: #efe7d8;   /* 代码块背景 */
 
+  /* 代码高亮的颜色（Prism.js 给代码里的关键字、字符串等加上不同的 class） */
+  --code-comment: #9a8d7e;   /* 注释 */
+  --code-keyword: #b5532c;   /* 关键字、命令 */
+  --code-string: #5f7a3a;    /* 字符串 */
+  --code-number: #9a5b13;    /* 数字、布尔值 */
+  --code-function: #3d5a80;  /* 函数名、选择器 */
+  --code-property: #7a4f8a;  /* 属性名、参数 */
+
   --font-serif: Georgia, "Noto Serif SC", "Songti SC", "SimSun", serif;
   --font-mono: Consolas, "Courier New", monospace;
 
@@ -33,6 +41,13 @@
   --accent: #e0a458;
   --line: #3a332a;
   --code-bg: #2f2921;
+
+  --code-comment: #8a7f70;
+  --code-keyword: #e0a458;
+  --code-string: #a8c27a;
+  --code-number: #e8b87a;
+  --code-function: #8fb3d9;
+  --code-property: #c9a2d6;
 
   color-scheme: dark;
 }
@@ -280,6 +295,15 @@ a.tag:hover { border-color: var(--accent); text-decoration: none; }
 }
 .prose pre code { background: none; padding: 0; font-size: 14px; }
 
+/* 代码高亮：只用上面定义的颜色变量，日夜间自动切换 */
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: var(--code-comment); font-style: italic; }
+.token.keyword, .token.important, .token.atrule, .token.tag, .token.builtin { color: var(--code-keyword); }
+.token.string, .token.char, .token.attr-value, .token.url, .token.inserted { color: var(--code-string); }
+.token.number, .token.boolean, .token.constant, .token.symbol { color: var(--code-number); }
+.token.function, .token.class-name, .token.selector { color: var(--code-function); }
+.token.property, .token.attr-name, .token.parameter, .token.variable { color: var(--code-property); }
+.token.punctuation, .token.operator { color: var(--muted); }
+
 /* 代码块右上角的复制按钮（由 main.js 自动添加） */
 .copy-btn {
   position: absolute;
@@ -316,6 +340,14 @@ a.tag:hover { border-color: var(--accent); text-decoration: none; }
 .pager strong { display: block; color: var(--text); font-size: 16px; margin-top: 2px; }
 .pager .next { text-align: right; }
 .back-to-list { display: inline-block; margin-top: 24px; font-size: 15px; }
+
+/* 评论区 */
+.comments {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.comments-title { font-size: 20px; margin-bottom: 16px; }
 
 /* 右侧目录 */
 .toc {

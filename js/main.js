@@ -7,7 +7,24 @@
    4. 代码块：复制按钮
    5. 回到顶部按钮
    6. 页脚年份
+   7. 访问统计（Cloudflare Web Analytics）
+   8. 评论区（Giscus）
    ========================================================= */
+
+// ---------- 网站配置：统计和评论都在这里开关 ----------
+// 下面几项留空 = 功能关闭；填上对应的值 = 自动开启，不用改任何 HTML
+const SITE_CONFIG = {
+  // Cloudflare Web Analytics 的 token（在 Cloudflare 后台添加网站后获得）
+  cloudflareToken: '12b29a644b774e6b8cc2069507ef6474',
+
+  // Giscus 评论：在 https://giscus.app 填好仓库后，页面下方会生成这几项
+  giscus: {
+    repo: 'yloter/yloter.github.io',
+    repoId: 'R_kgDOVS-TJg',
+    category: 'Announcements',
+    categoryId: 'DIC_kwDOVS-TJs4DJ4fr',
+  },
+};
 
 // ---------- 1. 日间 / 夜间切换 ----------
 // 页面加载时用哪个主题，已经在每个页面 <head> 里的小脚本决定了（防止闪一下白屏）。
@@ -108,3 +125,56 @@ if (backToTop) {
 document.querySelectorAll('.year').forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
+
+// ---------- 7. 访问统计 ----------
+// Cloudflare Web Analytics 不使用 cookie，不记录访客个人信息，只统计访问量、来源、页面
+if (SITE_CONFIG.cloudflareToken) {
+  const beacon = document.createElement('script');
+  beacon.type = 'module';   // 和 Cloudflare 官方代码保持一致
+  beacon.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+  beacon.dataset.cfBeacon = JSON.stringify({ token: SITE_CONFIG.cloudflareToken });
+  document.body.appendChild(beacon);
+}
+
+// ---------- 8. 评论区 ----------
+// Giscus 把每篇文章的评论存成 GitHub 仓库里的一个 Discussion，访客用 GitHub 账号登录后评论
+const commentsSection = document.querySelector('.comments');
+const g = SITE_CONFIG.giscus;
+
+// 日间 / 夜间分别用哪个 Giscus 主题（gruvbox 是暖色系，和网站风格接近）
+function giscusTheme() {
+  return root.dataset.theme === 'dark' ? 'gruvbox_dark' : 'gruvbox_light';
+}
+
+if (commentsSection && g.repoId && g.categoryId) {
+  commentsSection.hidden = false;
+  const s = document.createElement('script');
+  s.src = 'https://giscus.app/client.js';
+  s.async = true;
+  s.crossOrigin = 'anonymous';
+  const attrs = {
+    'data-repo': g.repo,
+    'data-repo-id': g.repoId,
+    'data-category': g.category,
+    'data-category-id': g.categoryId,
+    'data-mapping': 'pathname',        // 按网址路径区分文章：一篇文章对应一个讨论
+    'data-strict': '0',
+    'data-reactions-enabled': '1',     // 允许点表情
+    'data-emit-metadata': '0',
+    'data-input-position': 'top',      // 输入框在评论列表上方
+    'data-theme': giscusTheme(),
+    'data-lang': 'zh-CN',
+    'data-loading': 'lazy',            // 滚动到评论区附近才加载，不拖慢页面
+  };
+  Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+  commentsSection.querySelector('.giscus').appendChild(s);
+
+  // 切换日间 / 夜间时，通知评论区一起换主题
+  toggle?.addEventListener('click', () => {
+    const frame = document.querySelector('iframe.giscus-frame');
+    frame?.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme() } } },
+      'https://giscus.app'
+    );
+  });
+}

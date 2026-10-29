@@ -12,7 +12,8 @@
   4. 改上一篇 / 下一篇链接（新文章的"上一篇"= 原来最新的那篇；
      再打开原来最新那篇，把它的"下一篇"改成指向新文章）
   5. 在 index.html 和 blog.html 的列表最上面，各加一条新文章
-  6. Live Server 预览 → GitHub Desktop 提交 → Push origin
+  6. 在 sitemap.xml 里加一个 <url>，在 feed.xml 最上面加一个 <item>
+  7. Live Server 预览 → GitHub Desktop 提交 → Push origin
   ============================================================
 -->
 <html lang="zh-CN">
@@ -23,6 +24,14 @@
   <title>文章标题 · Everett 的笔记</title>
   <!-- 【改】一两句话的摘要，搜索引擎会显示它 -->
   <meta name="description" content="这里写一两句话的摘要。">
+  <!-- 【改】SEO：把下面的"文件名"换成这篇文章的文件名，og:title / og:description 和上面保持一致 -->
+  <link rel="canonical" href="https://yloter.com/posts/文件名.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Everett 的笔记">
+  <meta property="og:title" content="文章标题">
+  <meta property="og:description" content="这里写一两句话的摘要。">
+  <meta property="og:url" content="https://yloter.com/posts/文件名.html">
+  <link rel="alternate" type="application/rss+xml" title="Everett 的笔记" href="https://yloter.com/feed.xml">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <script>
     (function () {
@@ -86,6 +95,12 @@
           <span class="card next">下一篇 →<strong>敬请期待</strong></span>
         </nav>
         <a class="back-to-list" href="../blog.html">← 返回博客列表</a>
+
+        <!-- 评论区（Giscus）：在 js/main.js 顶部填好配置后自动显示 -->
+        <section class="comments" hidden>
+          <h2 class="comments-title">评论</h2>
+          <div class="giscus"></div>
+        </section>
       </article>
 
       <aside>
@@ -103,11 +118,15 @@
       © <span class="year">2026</span> Everett ·
       <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:hi@yloter.com">邮箱</a>
+      <a href="../feed.xml">RSS</a>
       · <a href="../claude.html">Claude 的一页</a>
     </div>
   </footer>
 
   <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+  <!-- 代码高亮：Prism.js，按代码块的 language-xxx 自动加载对应语言 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="../js/main.js"></script>
 </body>
 </html>
@@ -131,8 +150,11 @@
 
   引用          <blockquote>一句引用或提醒</blockquote>
 
-  代码块        <pre><code>第一行代码
+  代码块        <pre><code class="language-powershell">第一行代码
 第二行代码</code></pre>
+                language- 后面写语言名，用来决定怎么上色：
+                powershell / bash / css / html（写 markup）/ javascript / java / sql / json
+                不需要上色的纯文本写 language-none
                 注意：代码里如果有 < 和 >，要写成 &lt; 和 &gt;
                 否则浏览器会把它当成网页标签
 

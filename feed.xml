@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  RSS 订阅源：读者用 RSS 阅读器订阅这个地址，有新文章时会自动收到
+  每发一篇新文章，复制一个 <item> 块放到最上面，并更新 lastBuildDate
+-->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Everett 的笔记</title>
+    <link>https://yloter.com/</link>
+    <description>IT 运维，正在转向软件开发。写写运维、代码和生活。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 26 Oct 2026 12:00:00 +0800</lastBuildDate>
+    <atom:link href="https://yloter.com/feed.xml" rel="self" type="application/rss+xml"/>
+
+    <item>
+      <title>从零搭建个人网站（三）：域名、DNS 和 HTTPS，每一步到底在干什么</title>
+      <link>https://yloter.com/posts/domain-dns-https.html</link>
+      <guid>https://yloter.com/posts/domain-dns-https.html</guid>
+      <pubDate>Thu, 22 Oct 2026 12:00:00 +0800</pubDate>
+      <description>从买域名到推送更新：A 记录、CNAME、小云朵、HTTPS 证书、TXT 验证、域名邮箱，每个操作是什么意思、为什么要这么做。</description>
+    </item>
+
+    <item>
+      <title>从零搭建个人网站（二）：准备开发环境</title>
+      <link>https://yloter.com/posts/dev-environment.html</link>
+      <guid>https://yloter.com/posts/dev-environment.html</guid>
+      <pubDate>Tue, 20 Oct 2026 12:00:00 +0800</pubDate>
+      <description>静态网站只需要编辑器、浏览器和 Git。记录安装 VS Code、Git 和第一次配置的过程。</description>
+    </item>
+
+    <item>
+      <title>从零搭建个人网站（一）：规划与设计</title>
+      <link>https://yloter.com/posts/planning-and-design.html</link>
+      <guid>https://yloter.com/posts/planning-and-design.html</guid>
+      <pubDate>Tue, 20 Oct 2026 10:00:00 +0800</pubDate>
+      <description>动手写代码之前，先想清楚做什么：路线选择、网站地图、线框图和视觉风格。</description>
+    </item>
+
+  </channel>
+</rss>

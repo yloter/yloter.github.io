@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>从零搭建个人网站（三）：域名、DNS 和 HTTPS，每一步到底在干什么 · Everett 的笔记</title>
   <meta name="description" content="从买域名到推送更新：A 记录、CNAME、小云朵、HTTPS 证书、TXT 验证、域名邮箱、commit 和 push，每个操作是什么意思、为什么要这么做。">
+  <!-- SEO：告诉搜索引擎这一页的正式地址；分享到社交平台时显示的标题和摘要 -->
+  <link rel="canonical" href="https://yloter.com/posts/domain-dns-https.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Everett 的笔记">
+  <meta property="og:title" content="从零搭建个人网站（三）：域名、DNS 和 HTTPS，每一步到底在干什么">
+  <meta property="og:description" content="从买域名到推送更新：A 记录、CNAME、小云朵、HTTPS 证书、TXT 验证、域名邮箱、commit 和 push，每个操作是什么意思、为什么要这么做。">
+  <meta property="og:url" content="https://yloter.com/posts/domain-dns-https.html">
+  <link rel="alternate" type="application/rss+xml" title="Everett 的笔记" href="https://yloter.com/feed.xml">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <script>
     (function () {
@@ -89,7 +97,7 @@
           <p><strong>那根域名为什么不也用 CNAME？</strong>DNS 有个规定：根域名上还挂着 NS（谁管这个域名的 DNS）、MX（邮件发到哪）等其他记录，而 CNAME 不能和别的记录共存，所以根域名按标准只能用 A 记录。</p>
           <h3>为什么改完不是马上生效</h3>
           <p>世界各地的 DNS 服务器会把查过的结果缓存一段时间，时长由记录里的 TTL 决定。改了记录以后，要等这些缓存过期才会去查新的，所以有时要等几分钟甚至几小时。想确认自己的记录有没有生效，可以在 PowerShell 里直接查：</p>
-          <pre><code>nslookup yloter.com 8.8.8.8</code></pre>
+          <pre><code class="language-powershell">nslookup yloter.com 8.8.8.8</code></pre>
           <p>最后的 <code>8.8.8.8</code> 是指定用 Google 的公共 DNS 来查，避开自己电脑和路由器上的缓存。</p>
 
           <h2>Cloudflare 的小云朵：为什么要点成灰色</h2>
@@ -112,7 +120,7 @@
 
           <h2>验证域名：一条 TXT 记录防"抢注"</h2>
           <p>这一步是在 GitHub 账号设置（不是仓库设置）里做的，要求我加一条 TXT 记录：</p>
-          <pre><code>名称：_github-pages-challenge-yloter
+          <pre><code class="language-none">名称：_github-pages-challenge-yloter
 值：  GitHub 给的一串验证码</code></pre>
           <p>TXT 记录就是挂在域名上的一段文字，不影响访问，常用来证明"这个域名归我"：只有能修改这个域名 DNS 的人，才加得上这条记录。</p>
           <p><strong>为什么要验证？</strong>假设有一天我删了仓库，或者清空了 Custom domain，但 DNS 还指向 GitHub。这时候别人在他的仓库里填上 <code>yloter.com</code>，GitHub 就会把我的域名分给他，访客看到的就成了他的内容。这叫"子域名接管"。验证之后，这个域名只能用在我的账号下。所以这条 TXT 记录要一直留着，不要删。</p>
@@ -142,7 +150,7 @@
 
           <h2>踩过的两个坑</h2>
           <h3>推送报错：SSL/TLS connection failed</h3>
-          <pre><code>fatal: unable to access 'https://github.com/yloter/yloter.github.io.git/':
+          <pre><code class="language-none">fatal: unable to access 'https://github.com/yloter/yloter.github.io.git/':
  schannel: failed to receive handshake, SSL/TLS connection failed</code></pre>
           <p>拆开看：<code>schannel</code> 是 Windows 自带的加密组件，Git 用它和 GitHub 建立 HTTPS 连接；<code>handshake</code>（握手）是建立加密连接前，双方商量加密方式的那一步。合起来就是"和 GitHub 的加密连接没建起来"。这是网络层面的问题，和代码无关。从界面上也能看出来：提交已经成功，只是没传上去。</p>
           <p>常见原因和对应的处理方法：</p>
@@ -178,6 +186,12 @@
           <span class="card next">下一篇 →<strong>敬请期待</strong></span>
         </nav>
         <a class="back-to-list" href="../blog.html">← 返回博客列表</a>
+
+        <!-- 评论区（Giscus）：在 js/main.js 顶部填好配置后自动显示 -->
+        <section class="comments" hidden>
+          <h2 class="comments-title">评论</h2>
+          <div class="giscus"></div>
+        </section>
       </article>
 
       <aside>
@@ -195,11 +209,15 @@
       © <span class="year">2026</span> Everett ·
       <a href="https://github.com/yloter" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:hi@yloter.com">邮箱</a>
+      <a href="../feed.xml">RSS</a>
       · <a href="../claude.html">Claude 的一页</a>
     </div>
   </footer>
 
   <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+  <!-- 代码高亮：Prism.js，按代码块的 language-xxx 自动加载对应语言 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="../js/main.js"></script>
 </body>
 </html>
